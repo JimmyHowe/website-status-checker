@@ -1,0 +1,141 @@
+﻿
+body {
+
+text-align: center;
+background: white;
+max-width: 375px;
+margin: auto;
+padding: 10px;
+
+}
+
+header {
+	background-image:url("pictures/cloud3.jpg");
+	border: 3px solid #ddd;
+	max-width: 375px;
+	padding: 70px;
+	margin: auto;
+	text-align: center;
+
+}
+
+h1 {
+max-width: 375px;
+  margin: auto;
+  padding: 5px;
+  text-align: center;
+  font-family: Calibri, sans-sefir;
+  font-size: 35px;
+}
+
+div {
+max-width: 375px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+  font-family: Calibri, sans-sefir;
+  font-size: 17px;
+  background-color: #cccccc;
+  
+}
+
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  max-width: 375px;
+  font-size: 17px;
+  border: 3px solid #ddd;
+
+}
+
+li {
+  float: left;
+  max-width: 375px;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 13px;
+  text-decoration: none;
+  font-family: Calibri, sans-sefir;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #004d99;
+}
+
+.button1 {
+width: 100%;
+  background-color:  #00264d;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+button:hover {
+	
+	background-color: #000d1a;
+}
+
+#addedsites {
+  font-family: Calibri, sans-sefir;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#addedsites td, #addedsites th {
+  border: 1px solid #ddd;
+  padding: 6px;
+  background-color: #f2f2f2;
+}
+
+
+#addedsites th {
+  padding-top: 14px;
+  padding-bottom: 14px;
+  text-align: left;
+  background-color: #00264d;
+  color: white;
+}
+
+.addnewsite 
+{
+  background-color: #4CAF50;
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+  text-align: center;
+  border: none;
+  color: white;
+  float: right;
+  cursor: pointer;
+  margin-left: 20px;
+  margin-bottom: 15px;
+  margin-top: auto;
+  font-size: 22px;
+
+	
+	}
+
+
+p {
+	float: right;
+	margin-top: 15px;
+}
+
+
+

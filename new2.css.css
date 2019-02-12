@@ -1,0 +1,101 @@
+﻿
+body {
+
+text-align: center;
+background: white;
+max-width: 375px;
+margin: auto;
+padding: 10px;
+
+}
+
+header {
+	background-image:url("pictures/cloud3.jpg");
+	border: 3px solid #ddd;
+	max-width: 375px;
+	padding: 70px;
+	margin: auto;
+text-align: center;
+
+}
+
+h1 {
+max-width: 375px;
+  margin: auto;
+  padding: 5px;
+  text-align: center;
+  font-family: Calibri, sans-sefir;
+  font-size: 35px;
+}
+
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  max-width: 375px;
+  font-size: 17px;
+  border: 3px solid #ddd;
+
+}
+
+li {
+  float: left;
+  max-width: 375px;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 61px;
+  text-decoration: none;
+  font-family: Calibri, sans-sefir;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #004d99;
+}
+
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color:  #00264d;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  
+}
+
+input[type=submit]:hover {
+  background-color:  #000d1a;
+}
+
+div {
+  border-radius: 5px;
+  background-color: #cccccc;
+  padding: 20px;
+  font-family: Calibri, sans-sefir;
+  font-size: 17px;
+}
