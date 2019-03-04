@@ -7,65 +7,264 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>WSC</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Compressed CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.3/dist/css/foundation.min.css">
+
+    <!-- Compressed JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.3/dist/js/foundation.min.js"></script>
 
     <link rel="stylesheet" href="./css/demo.css">
 
 </head>
 <body>
 
-<style>
-    .status {
-        background: #004d99;
-    }
+<div id="app" class="container">
 
-    .on {
-        background: #4CAF50;
-    }
+    <div class="grid-container">
+        <div class="grid-x">
+            <div class="cell small-4">
 
-    .off {
-        background: red;
-    }
-</style>
+                <h1>Hello World</h1>
 
-<div id="app">
-    <h1>Welcome back {{ user.name }}</h1>
-    <h1>Welcome back {{ user2.name }}</h1>
-    <h1>{{ message }}</h1>
-    <h2 v-bind:class="status">{{ status }}</h2>
+            </div>
+        </div>
+        <div class="grid-x">
+            <div class="cell small-4">
 
-    <ul>
-        <li v-for="item in aList">{{ item }}</li>
+                <ul class="menu">
+                    <li>
+                        <router-link to="/">Home</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/tests">Tests</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/settings">Settings</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/logout">Logout</router-link>
+                    </li>
+                </ul>
 
-    </ul>
+            </div>
+        </div>
+        <div class="grid-x">
+            <div class="cell small-4">
+
+                <!-- route outlet -->
+                <!-- component matched by the route will render here -->
+                <router-view></router-view>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
 
-  class User {
+  // 1. Define route components.
+  // These can be imported from other files
+  const Foo = { template: '<div>foo</div>' };
+  const Bar = { template: '<div>bar</div>' };
 
-    name; // a name
-
-    constructor(name)
+  /*
+        The Login Page
+   */
+  const LoginPage = Vue.component('login-page', {
+    data    : function ()
     {
-      this.name = name;
-    }
-  }
+      return {
+        count: 0
+      }
+    },
+    template: `
+    <div>
+        <form action="index2.html">
+            <label for="Email">Email</label>
+            <input type="text" id="Email" name="Email" placeholder="Your email..">
 
-  let someData = {
-    user   : new User("Jimmy"),
-    user2  : new User("Linda"),
-    message: 'Hello Vue!',
-    status : "off",
-    aList: [
-      "One", "Two", "Three"
-    ]
-  };
+            <label for="Password">Password</label>
+            <input type="text" id="password" name="password" placeholder="Your password..">
 
-  var app = new Vue({
-    el  : '#app',
-    data: someData,
-  })
+            <input type="submit" value="Log in">
+        </form>
+    </div>
+    `
+  });
+
+  /*
+        The Login Page
+   */
+  const HomePage = Vue.component('home-page', {
+    data    : function ()
+    {
+      return {
+        username: "Jimmy"
+      }
+    },
+    methods: {
+      onStartAll: function ()
+      {
+        {
+          this.$router.push('tests');
+        }
+      }
+    },
+    template: `
+    <div id="HomePage">
+        <h2>Welcome Back {{ username }}</h2>
+        <p>
+            Test your websites to see that they are running without problems.
+        </p>
+
+        <button class="button" v-on:click="onStartAll">Test websites</button>
+    </div>
+    `
+  });
+
+  /*
+        The Login Page
+   */
+  const TestsPage = Vue.component('tests-page', {
+    data    : function ()
+    {
+      return {
+        count: 0
+      }
+    },
+    template: `
+    <div>
+
+        <button class="button">+</button>
+
+        <p>Add new site</p>
+
+        <table id="addedsites">
+            <tr>
+                <th>URL</th>
+                <th>TAG</th>
+                <th>STATUS</th>
+            </tr>
+            <tr>
+                <td>https://website</td>
+                <td>Site1</td>
+                <td>Active</td>
+            </tr>
+            <tr>
+                <td>https://website</td>
+                <td>Site2</td>
+                <td>Active</td>
+            </tr>
+            <tr>
+                <td>https://website</td>
+                <td>Site3</td>
+                <td>Active</td>
+            </tr>
+            <tr>
+                <td>https://website</td>
+                <td>Site4</td>
+                <td>Active</td>
+            </tr>
+            <tr>
+                <td>https://website</td>
+                <td>Site5</td>
+                <td>Down</td>
+            </tr>
+
+        </table>
+
+        <button class="button1" onclick="window.location.href='index3.html'">Test all</button>
+
+    </div>
+    `
+  });
+
+  /*
+        The Login Page
+   */
+  const SettingsPage = Vue.component('settings-page', {
+    data    : function ()
+    {
+      return {
+        count: 0
+      }
+    },
+    template: `
+    <div id="SettingsPage">
+        <div>
+            <p>Notifications</p><label class="switch">
+        <input type="checkbox">
+        <span class="slider round"></span>
+    </label>
+        <br>
+
+    </div>
+
+    <div>
+        <p>Set as Urgent</p>
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+        <br>
+    </div>
+
+    <div>
+        <p>Auto Check Interval</p>
+
+        <form>
+            <select name="autocheck">
+                <option value="every10minutes">Every 10 minutes</option>
+                <option value="every30minutes">Every 30 minutes</option>
+                <option value="every1hours">Every 1 hours</option>
+                <option value="every4hours">Every 4 hours</option>
+                <option value="every8hours">Every 8 hours</option>
+                <option value="every24hours">Every 24 hours</option>
+                <option value="custom">Custom</option>
+                <option value="off">Off</option>
+            </select>
+            <br><br>
+        </form>
+        <br>
+        <br>
+    </div>
+
+</div>
+    `
+  });
+
+  // 2. Define some routes
+  // Each route should map to a component. The "component" can
+  // either be an actual component constructor created via
+  // `Vue.extend()`, or just a component options object.
+  // We'll talk about nested routes later.
+  const routes = [
+    { path: '/login', component: LoginPage },
+    { path: '/', component: HomePage },
+    { path: '/tests', component: TestsPage },
+    { path: '/settings', component: SettingsPage },
+  ];
+
+  // 3. Create the router instance and pass the `routes` option
+  // You can pass in additional options here, but let's
+  // keep it simple for now.
+  const router = new VueRouter({
+    routes // short for `routes: routes`
+  });
+
+  // 4. Create and mount the root instance.
+  // Make sure to inject the router with the router option to make the
+  // whole app router-aware.
+  const app = new Vue({
+    router
+  }).$mount('#app')
+
+  // Now the app has started!
 
 </script>
 
