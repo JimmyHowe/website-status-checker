@@ -114,6 +114,7 @@
 <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.3/dist/js/foundation.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
 <!-- App Logic -->
 
@@ -141,8 +142,16 @@
   }
 
   class StatusChecker {
-    static check()
+    static check(url)
     {
+        axios.get(url)
+             .then(function (response) {
+                console.log(response)
+             })
+             .catch(function (error) {
+               console.log(error)
+             });
+
       return true;
     }
   }
@@ -292,17 +301,22 @@
 
         <div class="card-section">
 
-            <table id="test-suites">
+            <table id="test-suites" class="hover unstriped">
                 <thead>
                 <tr>
-                    <th>Url</th>
-                    <th>Status</th>
+                    <th style="text-align: left">Url</th>
+                    <th style="text-align: center">Status</th>
+                    <th style="text-align: center">Options</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="testSuite in testSuites">
-                    <th>{{ testSuite.url }}</th>
+                    <th style="text-align: left">{{ testSuite.url }}</th>
                     <th style="color: green">&#10004</th>
+                    <th>
+                        <button class="button">Test</button>
+                        <button class="button alert">X</button>
+                    </th>
                 </tr>
                 </tbody>
             </table>
@@ -310,7 +324,7 @@
         </div>
 
         <div class="card-section">
-            <button class="button1" onclick="window.location.href='index3.html'">Test all</button>
+            <button class="button expanded" onclick="window.location.href='index3.html'">Test all</button>
         </div>
 
     </div>
