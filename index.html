@@ -7,17 +7,29 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>WSC</title>
 
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
-    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
     <!-- Compressed CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.3/dist/css/foundation.min.css">
 
-    <!-- Compressed JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.3/dist/js/foundation.min.js"></script>
+    <style type="text/css">
+        #WSC_Menu {
+            padding: 5px;
+            background-color: #222;
+            border-color: #080808;
+        }
 
-    <link rel="stylesheet" href="./css/demo.css">
+        #WSC_Menu li {
+            float: right;
+        }
+
+        #WSC_Menu li a {
+            color: #9d9d9d;
+        }
+
+        #WSC_Menu li a:hover {
+            color: #fff;
+            background-color: transparent;
+        }
+    </style>
 
 </head>
 <body>
@@ -26,16 +38,22 @@
 
     <div class="grid-container">
         <div class="grid-x">
-            <div class="cell small-4">
+            <div class="cell small-6">
 
-                <h1>Hello World</h1>
+                <div id="WSC_Header" class="card">
+
+                    <div class="card-section">
+                        <h1>Website Status Checker</h1>
+                    </div>
+
+                </div>
 
             </div>
         </div>
         <div class="grid-x">
-            <div class="cell small-4">
+            <div class="cell small-6">
 
-                <ul class="menu">
+                <ul id="WSC_Menu" class="menu">
                     <li>
                         <router-link to="/">Home</router-link>
                     </li>
@@ -53,7 +71,7 @@
             </div>
         </div>
         <div class="grid-x">
-            <div class="cell small-4">
+            <div class="cell small-6">
 
                 <!-- route outlet -->
                 <!-- component matched by the route will render here -->
@@ -65,12 +83,117 @@
 
 </div>
 
+<!--Firebase Scripts -->
+
+<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase-firestore.js"></script>
+<script>
+  // Initialize Firebase
+  const config = {
+    apiKey           : "AIzaSyBjhZ2meCR2kapRepos8cezA2P-0Sxpncs",
+    authDomain       : "pmfd-website-status-checker.firebaseapp.com",
+    databaseURL      : "https://pmfd-website-status-checker.firebaseio.com",
+    projectId        : "pmfd-website-status-checker",
+    storageBucket    : "pmfd-website-status-checker.appspot.com",
+    messagingSenderId: "250743940681"
+  };
+  firebase.initializeApp(config);
+
+  const Auth = firebase.auth();
+  const DB = firebase.firestore();
+
+  // DB.settings({ timestampsInSnapshots: true });
+
+</script>
+
+<!-- Supplementary Libraries -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.3/dist/js/foundation.min.js"></script>
+
+<!-- App Logic -->
+
 <script>
 
-  // 1. Define route components.
-  // These can be imported from other files
-  const Foo = { template: '<div>foo</div>' };
-  const Bar = { template: '<div>bar</div>' };
+  class User {
+      static logIn(email, password)
+      {
+        Auth.createUserWithEmailAndPassword(this.email, this.password).then(credentials =>
+        {
+          return new RegisteredUser(email, password);
+        });
+      }
+  }
+
+  class GuestUser extends User {
+
+  }
+
+  class RegisteredUser extends User {
+    constructor(email, password)
+    {
+      super();
+    }
+  }
+
+  class StatusChecker {
+    static check()
+    {
+      return true;
+    }
+  }
+
+  class TestSuite {
+
+    constructor(url)
+    {
+      this.url = url;
+    }
+
+    checkStatus()
+    {
+      return StatusChecker.check(this.url)
+    }
+  }
+
+  /*
+        The Login Page
+   */
+  const RegisterPage = Vue.component('register-page', {
+    data    : function ()
+    {
+      return {
+        email   : '',
+        password: ''
+      }
+    },
+    template: `
+    <div class="card">
+        <div class="card-section">
+            <label for="register-email">Email</label>
+            <input type="text" v-model="email" id="register-email" name="email">
+
+            <label for="register-password">Password</label>
+            <input type="text" v-model="password" id="register-password" name="password">
+
+            <button class="button" v-on:click="onRegister">Register</button>
+        </div>
+    </div>
+    `,
+    methods : {
+      onRegister: function ()
+      {
+        Auth.createUserWithEmailAndPassword(this.email, this.password).then(credentials =>
+        {
+          // TODO: Do something
+        });
+      }
+    }
+  });
 
   /*
         The Login Page
@@ -107,7 +230,7 @@
         username: "Jimmy"
       }
     },
-    methods: {
+    methods : {
       onStartAll: function ()
       {
         {
@@ -116,69 +239,79 @@
       }
     },
     template: `
-    <div id="HomePage">
-        <h2>Welcome Back {{ username }}</h2>
-        <p>
-            Test your websites to see that they are running without problems.
-        </p>
+    <div id="HomePage" class="Page card">
 
-        <button class="button" v-on:click="onStartAll">Test websites</button>
+        <div class="card-section text-center">
+
+            <h2>Welcome Back {{ username }}</h2>
+
+            <p>
+                Test your websites to see that they are running without problems.
+            </p>
+
+            <button class="button" v-on:click="onStartAll">Test websites</button></div>
+
+        </div>
+
     </div>
     `
   });
 
   /*
-        The Login Page
+        The Tests Page
    */
   const TestsPage = Vue.component('tests-page', {
     data    : function ()
     {
       return {
-        count: 0
+        testSuites: [
+          new TestSuite("https://jimmyhowe.com")
+        ],
+      }
+    },
+    methods: {
+      onAdd: function()
+      {
+        this.testSuites.push(new TestSuite(this.url, this.tag))
       }
     },
     template: `
-    <div>
+    <div id="TestPage" class="Page card">
 
-        <button class="button">+</button>
+        <div class="card-section">
 
-        <p>Add new site</p>
+            <div class="input-group">
+                <span class="input-group-label">URL</span>
+                <input type="text" v-model="url" class="input-group-field" placeholder="http://example.com">
+                <div class="input-group-button">
+                    <button v-on:click="onAdd" class="button">+</button>
+                </div>
+            </div>
 
-        <table id="addedsites">
-            <tr>
-                <th>URL</th>
-                <th>TAG</th>
-                <th>STATUS</th>
-            </tr>
-            <tr>
-                <td>https://website</td>
-                <td>Site1</td>
-                <td>Active</td>
-            </tr>
-            <tr>
-                <td>https://website</td>
-                <td>Site2</td>
-                <td>Active</td>
-            </tr>
-            <tr>
-                <td>https://website</td>
-                <td>Site3</td>
-                <td>Active</td>
-            </tr>
-            <tr>
-                <td>https://website</td>
-                <td>Site4</td>
-                <td>Active</td>
-            </tr>
-            <tr>
-                <td>https://website</td>
-                <td>Site5</td>
-                <td>Down</td>
-            </tr>
+        </div>
 
-        </table>
+        <div class="card-section">
 
-        <button class="button1" onclick="window.location.href='index3.html'">Test all</button>
+            <table id="test-suites">
+                <thead>
+                <tr>
+                    <th>Url</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="testSuite in testSuites">
+                    <th>{{ testSuite.url }}</th>
+                    <th style="color: green">&#10004</th>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="card-section">
+            <button class="button1" onclick="window.location.href='index3.html'">Test all</button>
+        </div>
 
     </div>
     `
