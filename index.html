@@ -169,20 +169,31 @@
   }
     
  
-/* ADDED CLASSES
-
+	MenuManager.goHome()
+	
+	
 class MenuManager {
 
     currentPage;
   
     setCurrentPage(currentPage)
     {
-  //logic
+  	Vue.$router.push(currentPage)
+    }
+    
+    goHome()
+    {
+	this.setCurrentPage('/')
     }
 	
-	 getCurrentPage()
+	goSettings()
     {
-  //logic
+	this.setCurrentPage('/settings')
+    }
+	
+    getCurrentPage()
+    {
+	  return Vue.$router.currentRoute; // /, settings, test-suites
     }
 	
 }
