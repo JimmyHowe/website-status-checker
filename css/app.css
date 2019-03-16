@@ -1,0 +1,45 @@
+/*
+
+    Menu bar
+
+*/
+
+body {
+
+    padding: 20px;
+
+    background-image: url("/img/Background.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+#WSC_Header {
+    margin-bottom: 0;
+    height: 200px;
+}
+
+/*
+
+    Menu bar
+
+*/
+
+#WSC_Menu {
+    padding: 5px;
+    background-color: #222;
+    border-color: #080808;
+}
+
+#WSC_Menu li {
+    float: right;
+}
+
+#WSC_Menu li a {
+    color: #9d9d9d;
+}
+
+#WSC_Menu li a:hover {
+    color: #fff;
+    background-color: transparent;
+}
