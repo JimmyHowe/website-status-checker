@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -45,8 +45,6 @@
                     <div class="card-section">
                         <h1>Website Status Checker</h1>
                     </div>
-
-                    <register-page></register-page>
 
                 </div>
 
@@ -118,6 +116,10 @@
 <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.3/dist/js/foundation.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
+<!-- Common Classes -->
+
+<script src="js/wsc-classes.js"></script>
+
 <!-- App Logic -->
 
 <script>
@@ -126,243 +128,6 @@
   // {
   //   return new RegisteredUser(email, password);
   // });
-
-  // FROM HERE
-  // FROM HERE
-  // FROM HERE
-
-  class User {
-
-    email;
-    testSuites;
-    settings;
-
-    getEmail()
-    {
-      return this.email;
-    }
-
-    setEmail(email)
-    {
-      this.email = email;
-    }
-
-    getTestSuites()
-    {
-      return this.testSuites;
-    }
-
-    setTestSuites(testSuites)
-    {
-      this.testSuites = testSuites;
-    }
-
-    getSettings()
-    {
-      return this.settings;
-    }
-
-    setSettings(settings)
-    {
-      this.settings = settings;
-    }
-  }
-    
- 
-/* ADDED CLASSES
-
-class MenuManager {
-
-    currentPage;
-  
-    setCurrentPage(currentPage)
-    {
-  //logic
-    }
-	
-	 getCurrentPage()
-    {
-  //logic
-    }
-	
-}
-	
-class App {
-
-    menuManager;
-	user;
-  
-    setUser(user)
-    {
-    //logic
-    }
-	
-	 getUser()
-    {
-    //logic
-    }
-	
-	 setMenuManager(menuManager)
-    {
-    //logic
-    }
-	
-	 getMenuManager()
-    {
-    //logic
-    }
-	
-}
-
-class settings {
-	
-	notifications;
-	timeout;
-	urgency;
-	
-	getNotifications()
-    {
-    //logic
-	}
-	
-	setNotifications(notifications)
-    {
-	//logic	
-	}
-	
-	getTimeout() 
-    {
-	//logic	
-	}
-    
-	setTimeout(timeout) 
-    {
-	//logic	
-	}
-	
-	getUrgency() 
-    {
-	//logic	
-	}
-	
-	setUrgency(urgency) 
-    {
-	//logic	
-	}
-	
-}
-
-class testSuite {
-	
-	url;
-	tag;
-	status;
-	
-	getUrl()
-    {
-	//logic	
-	}
-	
-	setUrl(url)
-    {
-	//logic	
-	}
-	
-	getTag() 
-    {
-	//logic	
-	}
-	
-	setTag(tag) 
-    {
-	//logic	
-	}
-	
-	getStatus() 
-    {
-	//logic	
-	}
-	
-}   */
-    
-    
-    
-
-  class GuestUser extends User {
-
-    saveTestSuites()
-    {
-      // logic
-    }
-
-  }
-
-  class RegisteredUser extends User {
-
-    saveTestSuites()
-    {
-      // logic
-    }
-
-  }
-
-  // TO HERE
-  // TO HERE
-  // TO HERE
-
-  class Repository {
-    constructor(collection)
-    {
-      this.collection = collection;
-    }
-
-    getCollection()
-    {
-      return DB.collection(this.collection);
-    }
-
-    getDocument(document)
-    {
-      return DB.collection(this.collection).doc(document);
-    }
-  }
-
-  class SettingsRepository extends Repository {
-    constructor()
-    {
-      super("settings");
-    }
-  }
-
-  class StatusChecker {
-    static check(url)
-    {
-      axios.get(url)
-           .then(function (response)
-           {
-             console.log(response)
-           })
-           .catch(function (error)
-           {
-             console.log(error)
-           });
-
-      return true;
-    }
-  }
-
-  class TestSuite {
-
-    constructor(url)
-    {
-      this.url = url;
-    }
-
-    checkStatus()
-    {
-      return StatusChecker.check(this.url)
-    }
-  }
 
   /*
         The Login Page
@@ -596,33 +361,49 @@ class testSuite {
     `
   });
 
-  // 2. Define some routes
-  // Each route should map to a component. The "component" can
-  // either be an actual component constructor created via
-  // `Vue.extend()`, or just a component options object.
-  // We'll talk about nested routes later.
-  const routes = [
-    { path: '/login', component: LoginPage },
-    { path: '/', component: HomePage },
-    { path: '/tests', component: TestsPage },
-    { path: '/settings', component: SettingsPage },
-  ];
-
-  // 3. Create the router instance and pass the `routes` option
-  // You can pass in additional options here, but let's
-  // keep it simple for now.
-  const router = new VueRouter({
-    routes // short for `routes: routes`
+  //
+  // Boot the router with defined routes
+  //
+  const Router = new VueRouter({
+    routes: [
+      { path: '/login', component: LoginPage },
+      { path: '/', component: HomePage },
+      { path: '/tests', component: TestsPage },
+      { path: '/settings', component: SettingsPage },
+    ] // short for `routes: routes`
   });
 
-  // 4. Create and mount the root instance.
-  // Make sure to inject the router with the router option to make the
-  // whole app router-aware.
-  const app = new Vue({
-    router
-  }).$mount('#app')
+  //
+  // Set global router catch for unregistered users:
+  //
+  // If the user is logged in and on page login or register then
+  //
+  Router.beforeEach((to, from, next) =>
+  {
 
-  // Now the app has started!
+    // if user is not logged in and on login page
+    if (!User.isLoggedIn() && (to.path === '/login' || to.path === '/register'))
+    {
+      return next()
+    }
+
+    if (!User.isLoggedIn() && (to.path === '/login' || to.path === '/register'))
+    {
+      return next()
+    }
+
+    return next({ path: '/login' })
+  });
+
+  //
+  // Boot the Application
+  //
+  const App = new Vue({
+    router: Router,
+    data: {
+      test: "Testing"
+    }
+  }).$mount('#app');
 
 </script>
 
