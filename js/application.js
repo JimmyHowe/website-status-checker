@@ -31,12 +31,14 @@ class Application {
   {
     let that = this;
 
+    let status = false;
+
     let response = Auth.signInWithEmailAndPassword(email, password)
                        .then(function (credentials)
                        {
                          that._User = new RegisteredUser();
 
-                         console.log()
+                         status = true;
                        })
                        .catch(function (error)
                        {

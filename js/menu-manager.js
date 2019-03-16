@@ -27,6 +27,11 @@ class MenuManager {
     this.setCurrentPage('/')
   }
 
+  Tests()
+  {
+    this.setCurrentPage('/')
+  }
+
   Settings()
   {
     this.setCurrentPage('settings')

@@ -178,7 +178,15 @@
       {
         let status = Application.logIn(this.email, this.password);
 
+        if (Application.isLoggedIn())
+        {
+          this.$root.isLoggedIn = true;
 
+          Application.Navigate.Tests();
+        } else
+        {
+          this.$root.isLoggedIn = false;
+        }
       },
       onLoginAsGuest()
       {
@@ -242,17 +250,15 @@
 
         <div class="card-section text-center">
 
-            <h2>Welcome Back!</h2>
+            <h2 v-if="$root.isLoggedIn">Welcome Back!</h2>
+
+            <h2 v-else>Welcome</h2>
 
             <p>
-                Test your websites to see that they are running without problems.
+                This application will allow you to test multiple websites to check their status.
             </p>
 
-            <button class="button" v-on:click="onStartAll">Test websites</button>
-
         </div>
-
-        <pre>{{ $data }}</pre>
 
     </div>
     `
@@ -413,7 +419,7 @@
     router  : Router,
     data    : {
       isLoggedIn: false,
-      testMode  : true,
+      testMode  : false,
     },
     computed: {
       menuItems()
