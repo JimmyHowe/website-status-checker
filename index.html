@@ -54,24 +54,11 @@
             <div class="cell small-6">
 
                 <ul id="WSC_Menu" class="menu">
-                    <li>
-                        <router-link to="/login">Login</router-link>
+
+                    <li v-for="menuItem in menuItems">
+                        <router-link :to="menuItem.url">{{ menuItem.label }}</router-link>
                     </li>
-                    <li>
-                        <router-link to="/register">Register</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/">Home</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/tests">Tests</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/settings">Settings</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/logout">Logout</router-link>
-                    </li>
+
                 </ul>
 
             </div>
@@ -82,6 +69,8 @@
                 <!-- route outlet -->
                 <!-- component matched by the route will render here -->
                 <router-view></router-view>
+
+                <pre>{{ $data }}</pre>
 
             </div>
         </div>
@@ -188,6 +177,8 @@
       onLogin()
       {
         let status = Application.logIn(this.email, this.password);
+
+
       },
       onLoginAsGuest()
       {
@@ -242,7 +233,7 @@
         }
       }
     },
-    created : function()
+    created : function ()
     {
       this.user = Application.User;
     },
@@ -419,9 +410,51 @@
   // Boot the Application
   //
   const App = new Vue({
-    router: Router,
-    data  : {
-      test: "Testing"
+    router  : Router,
+    data    : {
+      isLoggedIn: false,
+      testMode  : true,
+    },
+    computed: {
+      menuItems()
+      {
+        let menuItems = [];
+
+        if (!this.isLoggedIn || this.testMode)
+        {
+          menuItems.push(
+            { label: "Login", url: "/login" },
+            { label: "Register", url: "/register" },
+          );
+        }
+
+        if (this.isLoggedIn || this.testMode)
+        {
+          menuItems.push(
+            { label: "Home", url: "/" },
+            { label: "Tests", url: "/tests" },
+            { label: "Settings", url: "settings" },
+            { label: "Logout", url: "/logout" },
+          );
+        }
+
+        console.log(menuItems);
+
+        return menuItems;
+      }
+    },
+    methods : {
+      TestModeOn()
+      {
+        this.menuItems = [
+          { label: "Login", url: "/login" },
+          { label: "Register", url: "/register" },
+          { label: "Home", url: "/" },
+          { label: "Tests", url: "/tests" },
+          { label: "Settings", url: "settings" },
+          { label: "Logout", url: "/logout" },
+        ]
+      }
     }
   }).$mount('#app');
 
