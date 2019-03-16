@@ -187,7 +187,13 @@
     methods : {
       onLogin()
       {
-        let status = User.logIn(this.email, this.password);
+        let status = Application.logIn(this.email, this.password);
+      },
+      onLoginAsGuest()
+      {
+        let status = Application.logInGuest();
+
+        Application.Navigate.Home();
       }
     },
     template: `
@@ -212,6 +218,7 @@
             <input type="text" v-model="password" id="login-password" name="password">
 
             <button class="button" v-on:click="onLogin">Login</button>
+            <button class="button" v-on:click="onLoginAsGuest">Login as Guest</button>
         </div>
     </div>
     `
@@ -224,7 +231,7 @@
     data    : function ()
     {
       return {
-        username: "Jimmy"
+        user: null
       }
     },
     methods : {
@@ -235,20 +242,26 @@
         }
       }
     },
+    created : function()
+    {
+      this.user = Application.User;
+    },
     template: `
     <div id="HomePage" class="Page card">
 
         <div class="card-section text-center">
 
-            <h2>Welcome Back {{ username }}</h2>
+            <h2>Welcome Back!</h2>
 
             <p>
                 Test your websites to see that they are running without problems.
             </p>
 
-            <button class="button" v-on:click="onStartAll">Test websites</button></div>
+            <button class="button" v-on:click="onStartAll">Test websites</button>
 
         </div>
+
+        <pre>{{ $data }}</pre>
 
     </div>
     `
