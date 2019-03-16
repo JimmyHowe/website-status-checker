@@ -267,17 +267,42 @@
 
   const TestSuiteRow = Vue.component('test-suite-row', {
     props   : [ 'test-suite' ],
-    created : function ()
+    data    : function ()
     {
-      console.log(this.testSuite)
+      return {
+        isTesting: false,
+      }
+    },
+    computed: {
+      status()
+      {
+        if (this.isTesting)
+        {
+          return "TTT"
+        } else {
+          return ""
+        }
+      }
+    },
+    methods : {
+      onTest()
+      {
+
+      },
+
+      onRemove()
+      {
+
+      }
     },
     template: `
     <tr>
         <th style="text-align: left">{{ testSuite }}</th>
-        <th style="color: green">&#10004</th>
+        <th v-if="isTesting" style="color: red">&#10004</th>
+        <th v-if="!isTesting" style="color: green">&#10004</th>
         <th>
-            <button class="button">Test</button>
-            <button class="button alert">X</button>
+            <button v-on:click="onTest" class="button">Test</button>
+            <button v-on:click="onRemove" class="button alert">X</button>
         </th>
     </tr>
     `

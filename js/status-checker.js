@@ -1,4 +1,5 @@
 class StatusChecker {
+
   static check(url)
   {
     axios.get(url)
@@ -10,7 +11,5 @@ class StatusChecker {
          {
            console.log(error)
          });
-
-    return true;
   }
 }
