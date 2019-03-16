@@ -1,12 +1,17 @@
-export class TestSuite {
+class TestSuite {
 
   url;
-  tag;
+
   status;
+
+  constructor(url)
+  {
+    this.url = url;
+  }
 
   getUrl()
   {
-    //logic
+    return this.url;
   }
 
   setUrl(url)

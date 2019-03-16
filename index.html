@@ -117,6 +117,7 @@
 <script src="js/application.js"></script>
 <script src="js/user.js"></script>
 <script src="js/user-settings.js"></script>
+<script src="js/test-suite.js"></script>
 
 <!-- App Logic -->
 
@@ -298,7 +299,7 @@
     methods : {
       onAdd: function ()
       {
-        this.testSuites.push(new TestSuite(this.url, this.tag))
+        this.testSuites.push(new TestSuite(this.url))
       }
     },
     template: `
