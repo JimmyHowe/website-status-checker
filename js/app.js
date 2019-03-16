@@ -326,7 +326,9 @@ const App = new Vue({
   computed: {
     menuItems()
     {
-      let menuItems = [];
+      let menuItems = [
+        { label: "Home", url: "/" },
+      ];
 
       if (!this.isLoggedIn || this.testMode)
       {
@@ -339,7 +341,6 @@ const App = new Vue({
       if (this.isLoggedIn || this.testMode)
       {
         menuItems.push(
-          { label: "Home", url: "/" },
           { label: "Tests", url: "/tests" },
           { label: "Settings", url: "settings" },
           { label: "Logout", url: "/logout" },
