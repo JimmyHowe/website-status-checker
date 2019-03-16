@@ -55,6 +55,12 @@
 
                 <ul id="WSC_Menu" class="menu">
                     <li>
+                        <router-link to="/login">Login</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/register">Register</router-link>
+                    </li>
+                    <li>
                         <router-link to="/">Home</router-link>
                     </li>
                     <li>
@@ -118,16 +124,14 @@
 
 <!-- Common Classes -->
 
-<script src="js/wsc-classes.js"></script>
+<script src="js/menu-manager.js"></script>
+<script src="js/application.js"></script>
+<script src="js/user.js"></script>
+<script src="js/user-settings.js"></script>
 
 <!-- App Logic -->
 
 <script>
-
-  // Auth.createUserWithEmailAndPassword(this.email, this.password).then(credentials =>
-  // {
-  //   return new RegisteredUser(email, password);
-  // });
 
   /*
         The Login Page
@@ -142,6 +146,9 @@
     },
     template: `
     <div class="card">
+        <div class="card-divider">
+            <h1>Register</h1>
+        </div>
         <div class="card-section">
             <label for="register-email">Email</label>
             <input type="text" v-model="email" id="register-email" name="email">
@@ -156,10 +163,7 @@
     methods : {
       onRegister: function ()
       {
-        Auth.createUserWithEmailAndPassword(this.email, this.password).then(credentials =>
-        {
 
-        })
       }
     }
   });
@@ -171,20 +175,44 @@
     data    : function ()
     {
       return {
-        count: 0
+        hasError: false,
+        error   : {
+          heading: "Error",
+          message: ""
+        },
+        email   : '',
+        password: ''
+      }
+    },
+    methods : {
+      onLogin()
+      {
+        let status = User.logIn(this.email, this.password);
       }
     },
     template: `
-    <div>
-        <form action="index2.html">
-            <label for="Email">Email</label>
-            <input type="text" id="Email" name="Email" placeholder="Your email..">
+    <div id="LoginPage" class="card">
+        <div class="card-divider">
+            <h1>Login</h1>
+        </div>
+        <div v-if="hasError" class="card-section">
+            <div class="callout alert" data-closable>
+                    <h5>{{ error.heading }}</h5>
+                    <p>{{ error.message }}</p>
+                    <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+        </div>
+        <div class="card-section">
+            <label for="login-email">Email</label>
+            <input type="text" v-model="email" id="login-email" name="email">
 
-            <label for="Password">Password</label>
-            <input type="text" id="password" name="password" placeholder="Your password..">
+            <label for="login-password">Password</label>
+            <input type="text" v-model="password" id="login-password" name="password">
 
-            <input type="submit" value="Log in">
-        </form>
+            <button class="button" v-on:click="onLogin">Login</button>
+        </div>
     </div>
     `
   });
@@ -303,9 +331,9 @@
     `
   });
 
-  /*
-        The Login Page
-   */
+  //
+  // The Settings Page Component
+  //
   const SettingsPage = Vue.component('settings-page', {
     data    : function ()
     {
@@ -367,6 +395,7 @@
   const Router = new VueRouter({
     routes: [
       { path: '/login', component: LoginPage },
+      { path: '/register', component: RegisterPage },
       { path: '/', component: HomePage },
       { path: '/tests', component: TestsPage },
       { path: '/settings', component: SettingsPage },
@@ -374,33 +403,11 @@
   });
 
   //
-  // Set global router catch for unregistered users:
-  //
-  // If the user is logged in and on page login or register then
-  //
-  Router.beforeEach((to, from, next) =>
-  {
-
-    // if user is not logged in and on login page
-    if (!User.isLoggedIn() && (to.path === '/login' || to.path === '/register'))
-    {
-      return next()
-    }
-
-    if (!User.isLoggedIn() && (to.path === '/login' || to.path === '/register'))
-    {
-      return next()
-    }
-
-    return next({ path: '/login' })
-  });
-
-  //
   // Boot the Application
   //
   const App = new Vue({
     router: Router,
-    data: {
+    data  : {
       test: "Testing"
     }
   }).$mount('#app');
