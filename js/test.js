@@ -1,4 +1,4 @@
-class TestSuite {
+class Test {
 
   url;
 

@@ -2,16 +2,22 @@ class Application {
 
   static Navigate = new MenuManager();
 
-  static _User;
-
-  static get User()
+  static TestMode(status)
   {
-    return this._User;
+    App.$root.shared.testMode = status;
   }
 
-  static set User(value)
+  static Boot()
   {
-    this._User = value;
+    console.log("Booting Application...");
+
+    Auth.onAuthStateChanged(function(user) {
+      if (user) {
+        App.$root.user = user.id;
+      } else {
+        App.$root.user = null;
+      }
+    });
   }
 
   static isLoggedIn()
@@ -29,21 +35,7 @@ class Application {
    */
   static logIn(email, password)
   {
-    let that = this;
-
-    let status = false;
-
-    let response = Auth.signInWithEmailAndPassword(email, password)
-                       .then(function (credentials)
-                       {
-                         that._User = new RegisteredUser();
-
-                         status = true;
-                       })
-                       .catch(function (error)
-                       {
-                         console.log(error)
-                       });
+    return Auth.signInWithEmailAndPassword(email, password);
   }
 
   /**
@@ -63,7 +55,7 @@ class Application {
     let response = Auth.createUserWithEmailAndPassword(email, password)
                        .then(function (credentials)
                        {
-
+                         Application.Navigate.Home();
                        })
                        .catch(function (error)
                        {
@@ -72,5 +64,36 @@ class Application {
 
                          console.log(errorMessage);
                        });
+  }
+
+  static Guard()
+  {
+    Router.beforeEach((to, from, next) =>
+    {
+      if(App.$root.shared.isLoggedIn != null)
+      {
+        return next();
+      }
+
+      if (to.path === '/login' || to.path === '/register')
+      {
+        return next()
+      }
+
+      return next({ path: '/login' })
+    });
+  }
+
+  static Unguard()
+  {
+    Router.beforeEach((to, from, next) =>
+    {
+      return next()
+    });
+  }
+
+  static getFirebaseUser()
+  {
+    return Auth.currentUser;
   }
 }

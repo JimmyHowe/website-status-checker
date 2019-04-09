@@ -10,12 +10,12 @@ padding: 10px;
 }
 
 header {
-	background-image:url("pictures/cloud3.jpg");
+	background-image:url("../pictures/cloud3.jpg");
 	border: 3px solid #ddd;
 	max-width: 375px;
 	padding: 70px;
 	margin: auto;
-text-align: center;
+	text-align: center;
 
 }
 
@@ -26,6 +26,17 @@ max-width: 375px;
   text-align: center;
   font-family: Calibri, sans-sefir;
   font-size: 35px;
+}
+
+div {
+max-width: 375px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+  font-family: Calibri, sans-sefir;
+  font-size: 17px;
+  background-color: #cccccc;
+  
 }
 
 
@@ -50,7 +61,7 @@ li a {
   display: block;
   color: white;
   text-align: center;
-  padding: 14px 61px;
+  padding: 14px 13px;
   text-decoration: none;
   font-family: Calibri, sans-sefir;
 }
@@ -63,20 +74,8 @@ li a:hover:not(.active) {
   background-color: #004d99;
 }
 
-
-input[type=text], select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-
-}
-
-input[type=submit] {
-  width: 100%;
+.button1 {
+width: 100%;
   background-color:  #00264d;
   color: white;
   padding: 14px 20px;
@@ -85,17 +84,58 @@ input[type=submit] {
   border-radius: 4px;
   cursor: pointer;
   font-size: 18px;
-  
 }
 
-input[type=submit]:hover {
-  background-color:  #000d1a;
+button:hover {
+	
+	background-color: #000d1a;
 }
 
-div {
-  border-radius: 5px;
-  background-color: #cccccc;
-  padding: 20px;
+#addedsites {
   font-family: Calibri, sans-sefir;
-  font-size: 17px;
+  border-collapse: collapse;
+  width: 100%;
 }
+
+#addedsites td, #addedsites th {
+  border: 1px solid #ddd;
+  padding: 6px;
+  background-color: #f2f2f2;
+}
+
+
+#addedsites th {
+  padding-top: 14px;
+  padding-bottom: 14px;
+  text-align: left;
+  background-color: #00264d;
+  color: white;
+}
+
+.addnewsite 
+{
+  background-color: #4CAF50;
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+  text-align: center;
+  border: none;
+  color: white;
+  float: right;
+  cursor: pointer;
+  margin-left: 20px;
+  margin-bottom: 15px;
+  margin-top: auto;
+  font-size: 22px;
+
+	
+	}
+
+
+p {
+	float: right;
+	margin-top: 15px;
+}
+
+
+

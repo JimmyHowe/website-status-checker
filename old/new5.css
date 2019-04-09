@@ -10,7 +10,7 @@ padding: 10px;
 }
 
 header {
-	background-image:url("pictures/cloud3.jpg");
+	background-image:url("../pictures/cloud3.jpg");
 	border: 3px solid #ddd;
 	max-width: 375px;
 	padding: 70px;

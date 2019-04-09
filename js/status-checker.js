@@ -2,14 +2,15 @@ class StatusChecker {
 
   static check(url)
   {
-    axios.get(url)
-         .then(function (response)
-         {
-           console.log(response)
-         })
-         .catch(function (error)
-         {
-           console.log(error)
-         });
+    return axios(url, {
+      method         : 'GET',
+      mode           : 'no-cors',
+      headers        : {
+        'Access-Control-Allow-Origin': '*',
+        // 'Content-Type'               : 'application/json',
+      },
+      withCredentials: true,
+      credentials    : 'same-origin',
+    });
   }
 }

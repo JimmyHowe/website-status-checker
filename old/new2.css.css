@@ -10,12 +10,12 @@ padding: 10px;
 }
 
 header {
-	background-image:url("pictures/cloud3.jpg");
+	background-image:url("../pictures/cloud3.jpg");
 	border: 3px solid #ddd;
 	max-width: 375px;
 	padding: 70px;
 	margin: auto;
-	text-align: center;
+text-align: center;
 
 }
 
@@ -26,23 +26,6 @@ max-width: 375px;
   text-align: center;
   font-family: Calibri, sans-sefir;
   font-size: 35px;
-}
-
-
-div {
-max-width: 375px;
-  margin: auto;
-  padding: 25px;
-  text-align: center;
-  font-family: Calibri, sans-sefir;
-  font-size: 17px;
-  background-color: #cccccc;
-}
-
-p {
-	
-	background-color: #f2f2f2;
-	padding: 20px;
 }
 
 
@@ -67,7 +50,7 @@ li a {
   display: block;
   color: white;
   text-align: center;
-  padding: 14px 13px;
+  padding: 14px 61px;
   text-decoration: none;
   font-family: Calibri, sans-sefir;
 }
@@ -80,8 +63,20 @@ li a:hover:not(.active) {
   background-color: #004d99;
 }
 
-button {
-	width: 100%;
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+
+}
+
+input[type=submit] {
+  width: 100%;
   background-color:  #00264d;
   color: white;
   padding: 14px 20px;
@@ -90,19 +85,17 @@ button {
   border-radius: 4px;
   cursor: pointer;
   font-size: 18px;
+  
 }
 
-button:hover {
-	
-	background-color: #000d1a;
+input[type=submit]:hover {
+  background-color:  #000d1a;
 }
 
-
-
-
-
-	
-
-
-
-
+div {
+  border-radius: 5px;
+  background-color: #cccccc;
+  padding: 20px;
+  font-family: Calibri, sans-sefir;
+  font-size: 17px;
+}

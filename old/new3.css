@@ -10,7 +10,7 @@ padding: 10px;
 }
 
 header {
-	background-image:url("pictures/cloud3.jpg");
+	background-image:url("../pictures/cloud3.jpg");
 	border: 3px solid #ddd;
 	max-width: 375px;
 	padding: 70px;
@@ -28,15 +28,21 @@ max-width: 375px;
   font-size: 35px;
 }
 
+
 div {
 max-width: 375px;
   margin: auto;
-  padding: 20px;
+  padding: 25px;
   text-align: center;
   font-family: Calibri, sans-sefir;
   font-size: 17px;
   background-color: #cccccc;
-  
+}
+
+p {
+	
+	background-color: #f2f2f2;
+	padding: 20px;
 }
 
 
@@ -74,8 +80,8 @@ li a:hover:not(.active) {
   background-color: #004d99;
 }
 
-.button1 {
-width: 100%;
+button {
+	width: 100%;
   background-color:  #00264d;
   color: white;
   padding: 14px 20px;
@@ -91,51 +97,12 @@ button:hover {
 	background-color: #000d1a;
 }
 
-#addedsites {
-  font-family: Calibri, sans-sefir;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-#addedsites td, #addedsites th {
-  border: 1px solid #ddd;
-  padding: 6px;
-  background-color: #f2f2f2;
-}
 
 
-#addedsites th {
-  padding-top: 14px;
-  padding-bottom: 14px;
-  text-align: left;
-  background-color: #00264d;
-  color: white;
-}
 
-.addnewsite 
-{
-  background-color: #4CAF50;
-  border-radius: 50%;
-  height: 45px;
-  width: 45px;
-  text-align: center;
-  border: none;
-  color: white;
-  float: right;
-  cursor: pointer;
-  margin-left: 20px;
-  margin-bottom: 15px;
-  margin-top: auto;
-  font-size: 22px;
 
 	
-	}
 
-
-p {
-	float: right;
-	margin-top: 15px;
-}
 
 
 

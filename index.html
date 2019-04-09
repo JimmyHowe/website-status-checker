@@ -5,12 +5,29 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>WSC</title>
+    <title>WebsiteStatusChecker.org</title>
 
     <!-- Compressed CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.3/dist/css/foundation.min.css">
 
     <link rel="stylesheet" href="/css/app.css">
+
+    <style>
+        .loader {
+            margin: 0 auto;
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 
 </head>
 <body>
@@ -43,8 +60,8 @@
 
                 </div>
 
-                <pre>{{ $data }}</pre>
-
+                <pre v-if="$root.testMode">{{ $data }}</pre>
+                <!---->
             </div>
         </div>
     </div>
@@ -68,6 +85,9 @@
   };
   firebase.initializeApp(config);
 
+  /**
+   *
+   */
   const Auth = firebase.auth();
   const DB = firebase.firestore();
 
@@ -80,6 +100,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.1.0/vuex.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.3/dist/js/foundation.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
@@ -90,7 +111,8 @@
 <script src="js/application.js"></script>
 <script src="js/user.js"></script>
 <script src="js/user-settings.js"></script>
-<script src="js/test-suite.js"></script>
+<script src="js/test.js"></script>
+<script src="js/status-checker.js"></script>
 
 <!-- App Logic -->
 

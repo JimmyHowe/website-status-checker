@@ -1,6 +1,7 @@
-
-/*
-      The Login Page
+/**
+ * The Register Page Component
+ *
+ * @type {*|never}
  */
 const RegisterPage = Vue.component('register-page', {
   data    : function ()
@@ -34,8 +35,10 @@ const RegisterPage = Vue.component('register-page', {
   }
 });
 
-/*
-      The Login Page
+/**
+ * The Login Page Component
+ *
+ * @type {*|never}
  */
 const LoginPage = Vue.component('login-page', {
   data    : function ()
@@ -53,17 +56,22 @@ const LoginPage = Vue.component('login-page', {
   methods : {
     onLogin()
     {
-      let status = Application.logIn(this.email, this.password);
+      let that = this;
 
-      if (Application.isLoggedIn())
-      {
-        this.$root.isLoggedIn = true;
+      that.hasError = false;
 
-        Application.Navigate.Tests();
-      } else
-      {
-        this.$root.isLoggedIn = false;
-      }
+      Application.logIn(this.email, this.password)
+                 .then(function (credentials)
+                 {
+                   App.$root.shared.isLoggedIn = true;
+                 })
+                 .catch(function (error)
+                 {
+                   console.log(error);
+
+                   that.error.message = error.message;
+                   that.hasError = true;
+                 });
     },
     onLoginAsGuest()
     {
@@ -101,27 +109,14 @@ const LoginPage = Vue.component('login-page', {
 });
 
 /*
-      The Login Page
+ * The Home Page
  */
 const HomePage = Vue.component('home-page', {
   data    : function ()
   {
-    return {
-      user: null
-    }
+    return {}
   },
-  methods : {
-    onStartAll: function ()
-    {
-      {
-        this.$router.push('tests');
-      }
-    }
-  },
-  created : function ()
-  {
-    this.user = Application.User;
-  },
+  methods : {},
   template: `
     <div id="HomePage" class="Page card">
 
@@ -146,40 +141,50 @@ const TestSuiteRow = Vue.component('test-suite-row', {
   data    : function ()
   {
     return {
-      isTesting: false,
+      hasRun   : false,
+      isRunning: false,
+      status   : "OK"
     }
   },
-  computed: {
-    status()
-    {
-      if (this.isTesting)
-      {
-        return "TTT"
-      } else {
-        return ""
-      }
-    }
+  computed: {},
+  created : function ()
+  {
+    this.runTest();
   },
   methods : {
-    onTest()
-    {
 
+    runTest()
+    {
+      let that = this;
+
+      that.isRunning = true;
+      setTimeout(function ()
+      {
+        that.isRunning = false;
+      }, 3000);
     },
 
-    onRemove()
+    onTest()
     {
+      this.runTest()
+    },
 
+    onRemove(item)
+    {
+      this.$parent.testSuites.splice(this, 1);
     }
   },
   template: `
     <tr>
-        <th style="text-align: left">{{ testSuite }}</th>
-        <th v-if="isTesting" style="color: red">&#10004</th>
-        <th v-if="!isTesting" style="color: green">&#10004</th>
-        <th>
+        <td style="text-align: left; font-weight: bold">{{ testSuite.url }}</td>
+        <td v-if="!isRunning">
+            {{ status }}
+        </td>
+        <td v-if="isRunning"><div class="loader"></div></td>
+        <td style="text-align: center">
             <button v-on:click="onTest" class="button">Test</button>
             <button v-on:click="onRemove" class="button alert">X</button>
-        </th>
+        </td>
     </tr>
     `
 });
@@ -192,15 +197,13 @@ const TestsPage = Vue.component('tests-page', {
   {
     return {
       url       : '',
-      testSuites: [
-        new TestSuite("https://jimmyhowe.com")
-      ],
+      testSuites: this.$root.shared.tests,
     }
   },
   methods : {
     onAdd: function ()
     {
-      this.testSuites.push(new TestSuite(this.url))
+      this.testSuites.push(new Test(this.url))
     }
   },
   template: `
@@ -311,8 +314,31 @@ const Router = new VueRouter({
     { path: '/', component: HomePage },
     { path: '/tests', component: TestsPage },
     { path: '/settings', component: SettingsPage },
-  ] // short for `routes: routes`
+  ]
 });
+
+//
+// Shared State
+//
+
+let Store = {
+  debug: true,
+  state: {
+    testMode  : false,
+    isLoggedIn: true,
+    tests     : [
+      new Test("https://jimmyhowe.com")
+    ]
+  },
+  setUser(user)
+  {
+    if (this.debug) console.log("dsfdsfdfgh");
+  },
+  unsetUser()
+  {
+    if (this.debug) console.log("defsdf");
+  }
+};
 
 //
 // Boot the Application
@@ -320,8 +346,7 @@ const Router = new VueRouter({
 const App = new Vue({
   router  : Router,
   data    : {
-    isLoggedIn: false,
-    testMode  : false,
+    shared: Store.state
   },
   computed: {
     menuItems()
@@ -330,7 +355,7 @@ const App = new Vue({
         { label: "Home", url: "/" },
       ];
 
-      if (!this.isLoggedIn || this.testMode)
+      if (!this.shared.isLoggedIn || this.shared.testMode)
       {
         menuItems.push(
           { label: "Login", url: "/login" },
@@ -338,7 +363,7 @@ const App = new Vue({
         );
       }
 
-      if (this.isLoggedIn || this.testMode)
+      if (this.shared.isLoggedIn || this.shared.testMode)
       {
         menuItems.push(
           { label: "Tests", url: "/tests" },
@@ -347,22 +372,11 @@ const App = new Vue({
         );
       }
 
-      console.log(menuItems);
-
       return menuItems;
     }
   },
-  methods : {
-    TestModeOn()
-    {
-      this.menuItems = [
-        { label: "Login", url: "/login" },
-        { label: "Register", url: "/register" },
-        { label: "Home", url: "/" },
-        { label: "Tests", url: "/tests" },
-        { label: "Settings", url: "settings" },
-        { label: "Logout", url: "/logout" },
-      ]
-    }
-  }
+  methods : {}
 }).$mount('#app');
+
+Application.Guard();
+Application.Boot();
