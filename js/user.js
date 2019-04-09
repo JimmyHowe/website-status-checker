@@ -6,6 +6,13 @@ class User {
 
   settings = new UserSettings();
 
+  constructor(email, testSuites, settings)
+  {
+    this.email = email;
+    this.testSuites = testSuites;
+    this.settings = settings;
+  }
+
   getEmail()
   {
     return this.email;

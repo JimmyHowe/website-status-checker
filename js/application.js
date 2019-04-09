@@ -2,75 +2,87 @@ class Application {
 
   static Navigate = new MenuManager();
 
+  /**
+   * Turns on test mode
+   *
+   * @param status
+   * @constructor
+   */
   static TestMode(status)
   {
     App.$root.shared.testMode = status;
   }
 
+  /**
+   * Boots the application
+   *
+   * @constructor
+   */
   static Boot()
   {
     console.log("Booting Application...");
 
-    Auth.onAuthStateChanged(function(user) {
-      if (user) {
-        App.$root.user = user.id;
-      } else {
-        App.$root.user = null;
+    Auth.onAuthStateChanged(function (user)
+    {
+      if (user)
+      {
+        App.$root.shared.isLoggedIn = true;
+      } else
+      {
+        App.$root.shared.isLoggedIn = false;
       }
     });
   }
 
+  /**
+   * Check if user is logged in
+   *
+   * @returns {boolean}
+   */
   static isLoggedIn()
   {
-    let user = Auth.currentUser;
-
-    return !!user;
+    return this.getFirebaseUser();
   }
 
   /**
-   * Logs in the user
+   * Logs in user and returns Firebase object
    *
    * @param email
    * @param password
+   *
+   * @returns {*}
    */
-  static logIn(email, password)
+  static LogInUsingFirebase(email, password)
   {
     return Auth.signInWithEmailAndPassword(email, password);
-  }
-
-  /**
-   * Logs in a Guest User
-   */
-  static logInGuest()
-  {
-    this._User = new GuestUser();
   }
 
   /**
    *
    * @constructor
    */
-  static RegisterUser(email, password)
+  static RegisterUserUsingFirebase(email, password)
   {
-    let response = Auth.createUserWithEmailAndPassword(email, password)
-                       .then(function (credentials)
-                       {
-                         Application.Navigate.Home();
-                       })
-                       .catch(function (error)
-                       {
-                         const errorCode = error.code;
-                         const errorMessage = error.message;
-
-                         console.log(errorMessage);
-                       });
+    return Auth.createUserWithEmailAndPassword(email, password);
   }
 
+  /**
+   * Sets the application in protected mode
+   *
+   * @constructor
+   */
   static Guard()
   {
     Router.beforeEach((to, from, next) =>
     {
-      if(App.$root.shared.isLoggedIn != null)
+      if (to.path === '/logout')
+      {
+        Application.logOutUser();
+
+        return next({ path: '/login' })
+      }
+
+      if (App.$root.shared.isLoggedIn != null)
       {
         return next();
       }
@@ -84,6 +96,11 @@ class Application {
     });
   }
 
+  /**
+   * Unguards the routes
+   *
+   * @constructor
+   */
   static Unguard()
   {
     Router.beforeEach((to, from, next) =>
@@ -92,8 +109,38 @@ class Application {
     });
   }
 
+  /**
+   * Gets the firebase user
+   *
+   * @returns {*}
+   */
   static getFirebaseUser()
   {
     return Auth.currentUser;
+  }
+
+  /**
+   * Log out logic
+   */
+  static logOutUser()
+  {
+    Auth.signOut().then(function() {
+      App.$root.shared.isLoggedIn = null;
+      App.$root.shared.user = null;
+    }, function(error) {
+      console.log(error);
+    });
+  }
+
+  /**
+   * Log in logic
+   *
+   * @constructor
+   */
+  static LogIn()
+  {
+    App.$root.shared.isLoggedIn = true;
+
+    this.Navigate.Home();
   }
 }

@@ -1,7 +1,9 @@
 class UserSettings {
 
   notifications;
+
   timeout;
+
   urgency;
 
   getNotifications()
@@ -33,5 +35,4 @@ class UserSettings {
   {
     //logic
   }
-
 }

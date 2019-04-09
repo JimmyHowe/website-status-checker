@@ -7,6 +7,11 @@ const RegisterPage = Vue.component('register-page', {
   data    : function ()
   {
     return {
+      hasError: false,
+      error   : {
+        heading: "Error",
+        message: ""
+      },
       email   : '',
       password: ''
     }
@@ -15,6 +20,15 @@ const RegisterPage = Vue.component('register-page', {
     <div class="card">
         <div class="card-divider">
             <h1>Register</h1>
+        </div>
+        <div v-if="hasError" class="card-section">
+            <div class="callout alert" data-closable>
+                    <h5>{{ error.heading }}</h5>
+                    <p>{{ error.message }}</p>
+                    <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
         </div>
         <div class="card-section">
             <label for="register-email">Email</label>
@@ -30,7 +44,22 @@ const RegisterPage = Vue.component('register-page', {
   methods : {
     onRegister: function ()
     {
+      let that = this;
 
+      this.hasError = false;
+
+      Application.RegisterUserUsingFirebase(this.email, this.password)
+                 .then(function (credentials)
+                 {
+                   Application.LogIn();
+                 })
+                 .catch(function (error)
+                 {
+                   console.log(error);
+
+                   that.error.message = error.message;
+                   that.hasError = true;
+                 });
     }
   }
 });
@@ -60,10 +89,10 @@ const LoginPage = Vue.component('login-page', {
 
       that.hasError = false;
 
-      Application.logIn(this.email, this.password)
+      Application.LogInUsingFirebase(this.email, this.password)
                  .then(function (credentials)
                  {
-                   App.$root.shared.isLoggedIn = true;
+                   Application.LogIn();
                  })
                  .catch(function (error)
                  {
@@ -102,7 +131,6 @@ const LoginPage = Vue.component('login-page', {
             <input type="text" v-model="password" id="login-password" name="password">
 
             <button class="button" v-on:click="onLogin">Login</button>
-            <button class="button" v-on:click="onLoginAsGuest">Login as Guest</button>
         </div>
     </div>
     `
@@ -239,7 +267,7 @@ const TestsPage = Vue.component('tests-page', {
         </div>
 
         <div class="card-section">
-            <button class="button expanded" onclick="window.location.href='index3.html'">Test all</button>
+            
         </div>
 
     </div>
@@ -325,7 +353,7 @@ let Store = {
   debug: true,
   state: {
     testMode  : false,
-    isLoggedIn: true,
+    isLoggedIn: false,
     tests     : [
       new Test("https://jimmyhowe.com")
     ]
@@ -375,7 +403,11 @@ const App = new Vue({
       return menuItems;
     }
   },
-  methods : {}
+  methods : {},
+  created : function ()
+  {
+    this.shared.isLoggedIn = Application.isLoggedIn();
+  }
 }).$mount('#app');
 
 Application.Guard();
