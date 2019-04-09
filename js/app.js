@@ -239,13 +239,13 @@ const TestsPage = Vue.component('tests-page', {
 
         <div class="card-section">
 
-            <div class="input-group">
+            <form class="input-group" v-on:submit.prevent="onAdd">
                 <span class="input-group-label">URL</span>
-                <input type="text" v-model="url" class="input-group-field" placeholder="http://example.com">
+                <input type="url" v-model="url" class="input-group-field" placeholder="http://example.com" required>
                 <div class="input-group-button">
-                    <button v-on:click="onAdd" class="button">+</button>
+                    <button type="submit" class="button">+</button>
                 </div>
-            </div>
+            </form>
 
         </div>
 
