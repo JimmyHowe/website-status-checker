@@ -320,7 +320,6 @@ const SettingsPage = Vue.component('settings-page', {
                     <option value="every4hours">Every 4 hours</option>
                     <option value="every8hours">Every 8 hours</option>
                     <option value="every24hours">Every 24 hours</option>
-                    <option value="custom">Custom</option>
                     <option value="off">Off</option>
                 </select>
 
